@@ -29,10 +29,16 @@ class ExceptionHandler extends Handle
             $this->msg = $e->msg;
             $this->errorCode = $e->errorCode;
         } else {
-            $this->code = 500;
-            $this->msg = '服务器内部错误';
-            $this->errorCode = 999;
-            $this->recordErrorLog($e);
+            if(config('app_debug')) {
+                // return default error page
+                return parent::render($e);
+            } else {
+                $this->code = 500;
+                $this->msg = '服务器内部错误';
+                $this->errorCode = 999;
+                $this->recordErrorLog($e);
+            }
+
         }
         $request = Request::instance();
         $result = [
