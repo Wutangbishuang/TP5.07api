@@ -22,6 +22,7 @@ class Banner
         if(!$banner){
             throw new Exception('内部错误');
         }
+        $c = config('setting.img_prefix');
         return $banner;
     }
 }
