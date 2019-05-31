@@ -8,8 +8,6 @@
 
 namespace app\api\model;
 
-
-use think\Db;
 use think\Model;
 
 class Banner extends Model
@@ -21,9 +19,8 @@ class Banner extends Model
 
     public static function getBannerByID($id)
     {
-        $result = Db::table('banner_item')
-            ->where('banner_id' , '=' , $id)
-            ->select();
-        return $result;
+        $banner = self::with(['items' , 'items.img'])
+                ->find($id);
+        return $banner;
     }
 }
