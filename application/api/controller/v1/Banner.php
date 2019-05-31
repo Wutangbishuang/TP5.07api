@@ -19,8 +19,6 @@ class Banner
         (new IDMustBePostiveInt())->goCheck();
 
         $banner = BannerModel::getBannerByID($id);
-        $banner->hidden(['update_time' , 'delete_time']);
-
         if(!$banner){
             throw new Exception('内部错误');
         }
