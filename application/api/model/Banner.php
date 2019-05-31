@@ -14,6 +14,11 @@ use think\Model;
 
 class Banner extends Model
 {
+    public function items()
+    {
+        return $this->hasMany('BannerItem' , 'banner_id' , 'id');
+    }
+
     public static function getBannerByID($id)
     {
         $result = Db::table('banner_item')
