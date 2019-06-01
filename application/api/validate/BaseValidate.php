@@ -23,14 +23,16 @@ class BaseValidate extends Validate
         $params = $request->param();
 
         $result = $this->batch()->check($params);
-        if(!$result){
-            $e = new ParameterException([
-                'msg' => $this->error,
-            ]);
-            throw $e;
-        } else {
-            return true;
+        if (!$this->check($params)) {
+            $exception = new ParameterException(
+                [
+                    // $this->error有一个问题，并不是一定返回数组，需要判断
+                    'msg' => is_array($this->error) ? implode(
+                        ';', $this->error) : $this->error,
+                ]);
+            throw $exception;
         }
+        return true;
     }
 
     protected function isPositiveInteger
