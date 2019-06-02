@@ -5,8 +5,6 @@ namespace app\api\controller\v1;
 
 
 use app\api\validate\Count;
-use app\api\model\Product as ProductModel;
-use app\api\model\Banner as BannerModel;
 use app\lib\exception\ProductException;
 
 class Product
@@ -15,9 +13,10 @@ class Product
     {
         (new Count())->goCheck();
         $products = (new \app\api\model\Product)->getMostRecent($count);
-        if(!$products){
+        if($products->isEmpty()){
             throw new ProductException();
         }
+        $products =$products->hidden(['summary']);
         return $products;
 
     }
