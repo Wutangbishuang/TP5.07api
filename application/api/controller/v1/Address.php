@@ -29,7 +29,7 @@ class Address
 
         $dataArray = $validate->getDataByRule(input('post.'));
 
-        $userAddress = $user->address();
+        $userAddress = $user->address;
         if(!$userAddress){
             // 创建 注意address()
             $user->address()->save($dataArray);
@@ -37,7 +37,7 @@ class Address
             // 更新 注意address
             $user->address->save($dataArray);
         }
-        return new SuccessMessage();
+        return json(new SuccessMessage(),201);
 
     }
 }

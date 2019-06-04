@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8">
-    <title>System Error</title>
-    <meta name="robots" content="noindex,nofollow" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <style>
+    <head>
+        <meta charset="UTF-8">
+        <title>System Error</title>
+        <meta name="robots" content="noindex,nofollow" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <style>
         /* Base */
         body {
             color: #333;
@@ -231,442 +231,809 @@
         pre.prettyprint .dec, pre.prettyprint .var { color: #606 }  /* a declaration; a variable name */
         pre.prettyprint .fun { color: red }  /* a function name */
     </style>
-</head>
-<body>
-    <div class="echo">
+    </head>
+    <body>
+        <div class="echo">
             </div>
         <div class="exception">
-    <div class="message">
-        
-            <div class="info">
-                <div>
-                    <h2>[0] <abbr title="think\Exception">Exception</abbr> in <a class="toggle" title="D:\App\wamp64\www\xerg\application\api\service\UserToken.php line 32">UserToken.php line 32</a></h2>
+            <div class="message">
+                <div class="info">
+                    <div>
+                        <h2>[401] 
+                            <abbr title="app\lib\exception\TokenException">TokenException</abbr> in
+                            <a class="toggle" title="D:\App\wamp64\www\xerg\application\api\service\Token.php line 32">Token.php line 32</a>
+                        </h2>
+                    </div>
+                    <div>
+                        <h1></h1>
+                    </div>
                 </div>
-                <div><h1>获取session_key及openID时异常 , 微信内部错误</h1></div>
             </div>
-        
-    </div>
             <div class="source-code">
-            <pre class="prettyprint lang-php"><ol start="23"><li class="line-23"><code>            $this-&gt;wxAppID,$this-&gt;wxAppSecret,$this-&gt;code);
-</code></li><li class="line-24"><code>    }
-</code></li><li class="line-25"><code>
-</code></li><li class="line-26"><code>
-</code></li><li class="line-27"><code>    public function get()
-</code></li><li class="line-28"><code>    {
-</code></li><li class="line-29"><code>        $result = curl_get($this-&gt;wxLoginUrl);
-</code></li><li class="line-30"><code>        $wxResult = json_decode($result , true);
-</code></li><li class="line-31"><code>        if(empty($wxResult)){
-</code></li><li class="line-32"><code>            throw new Exception('获取session_key及openID时异常 , 微信内部错误');
-</code></li><li class="line-33"><code>        } else {
-</code></li><li class="line-34"><code>                $loginFail = array_key_exists('errcode', $wxResult);
-</code></li><li class="line-35"><code>                if ($loginFail) {
-</code></li><li class="line-36"><code>                    $this-&gt;processLoginError($wxResult);
-</code></li><li class="line-37"><code>                } else {
-</code></li><li class="line-38"><code>                    $this-&gt;grantToken($wxResult);
-</code></li><li class="line-39"><code>                }
-</code></li><li class="line-40"><code>        }
-</code></li><li class="line-41"><code>    }
-</code></li></ol></pre>
-        </div>
+                <pre class="prettyprint lang-php">
+                    <ol start="23">
+                        <li class="line-23">
+                            <code>    }
+</code>
+                        </li>
+                        <li class="line-24">
+                            <code>
+</code>
+                        </li>
+                        <li class="line-25">
+                            <code>
+</code>
+                        </li>
+                        <li class="line-26">
+                            <code>    public static function getCurrentTokenVar($key)
+</code>
+                        </li>
+                        <li class="line-27">
+                            <code>    {
+</code>
+                        </li>
+                        <li class="line-28">
+                            <code>        $token = Request::instance()
+</code>
+                        </li>
+                        <li class="line-29">
+                            <code>            -&gt;header('token');
+</code>
+                        </li>
+                        <li class="line-30">
+                            <code>        $vars = Cache::get($token);
+</code>
+                        </li>
+                        <li class="line-31">
+                            <code>        if(!$vars){
+</code>
+                        </li>
+                        <li class="line-32">
+                            <code>            throw new TokenException();
+</code>
+                        </li>
+                        <li class="line-33">
+                            <code>        } else {
+</code>
+                        </li>
+                        <li class="line-34">
+                            <code>            if(!is_array($vars)){
+</code>
+                        </li>
+                        <li class="line-35">
+                            <code>                $vars = json_decode($vars , true);
+</code>
+                        </li>
+                        <li class="line-36">
+                            <code>            }
+</code>
+                        </li>
+                        <li class="line-37">
+                            <code>            if(array_key_exists($key, $vars)){
+</code>
+                        </li>
+                        <li class="line-38">
+                            <code>                return $vars[$key];
+</code>
+                        </li>
+                        <li class="line-39">
+                            <code>            } else {
+</code>
+                        </li>
+                        <li class="line-40">
+                            <code>                throw new Exception('尝试获取的Token变量并不存在');
+</code>
+                        </li>
+                        <li class="line-41">
+                            <code>            }
+</code>
+                        </li>
+                    </ol>
+                </pre>
+            </div>
             <div class="trace">
-            <h2>Call Stack</h2>
-            <ol>
-                <li>in <a class="toggle" title="D:\App\wamp64\www\xerg\application\api\service\UserToken.php line 32">UserToken.php line 32</a></li>
-                                <li>
-                at <abbr title="app\api\service\UserToken">UserToken</abbr>->get() in <a class="toggle" title="D:\App\wamp64\www\xerg\application\api\controller\v1\Token.php line 16">Token.php line 16</a>                </li>
-                                <li>
-                at <abbr title="app\api\controller\v1\Token">Token</abbr>->getToken('<a class="toggle" title="011cybY02meWMV0Z1A012Fz0Y02cybYn">011cybY02meWMV0Z1A01...</a>')                </li>
-                                <li>
-                at <abbr title="ReflectionMethod">ReflectionMethod</abbr>->invokeArgs(<em>object</em>(<abbr title="app\api\controller\v1\Token">Token</abbr>), ['<a class="toggle" title="011cybY02meWMV0Z1A012Fz0Y02cybYn">011cybY02meWMV0Z1A01...</a>']) in <a class="toggle" title="D:\App\wamp64\www\xerg\thinkphp\library\think\App.php line 224">App.php line 224</a>                </li>
-                                <li>
-                at <abbr title="think\App">App</abbr>::invokeMethod([<em>object</em>(<abbr title="app\api\controller\v1\Token">Token</abbr>), 'getToken'], []) in <a class="toggle" title="D:\App\wamp64\www\xerg\thinkphp\library\think\App.php line 389">App.php line 389</a>                </li>
-                                <li>
-                at <abbr title="think\App">App</abbr>::module(['api', 'v1.Token', 'getToken'], ['app_namespace' => 'app', 'app_debug' => <em>true</em>, 'app_trace' => <em>false</em>, ...], <em>false</em>) in <a class="toggle" title="D:\App\wamp64\www\xerg\thinkphp\library\think\App.php line 130">App.php line 130</a>                </li>
-                                <li>
-                at <abbr title="think\App">App</abbr>::run() in <a class="toggle" title="D:\App\wamp64\www\xerg\thinkphp\start.php line 18">start.php line 18</a>                </li>
-                                <li>
-                at require('<a class="toggle" title="D:\App\wamp64\www\xerg\thinkphp\start.php">D:\App\wamp64\www\xe...</a>') in <a class="toggle" title="D:\App\wamp64\www\xerg\public\index.php line 18">index.php line 18</a>                </li>
-                            </ol>
+                <h2>Call Stack</h2>
+                <ol>
+                    <li>in 
+                        <a class="toggle" title="D:\App\wamp64\www\xerg\application\api\service\Token.php line 32">Token.php line 32</a>
+                    </li>
+                    <li>
+                at 
+                        <abbr title="app\api\service\Token">Token</abbr>::getCurrentTokenVar('uid') in
+                        <a class="toggle" title="D:\App\wamp64\www\xerg\application\api\service\Token.php line 48">Token.php line 48</a>
+                    </li>
+                    <li>
+                at 
+                        <abbr title="app\api\service\Token">Token</abbr>::getCurrentUid() in
+                        <a class="toggle" title="D:\App\wamp64\www\xerg\application\api\controller\v1\Address.php line 23">Address.php line 23</a>
+                    </li>
+                    <li>
+                at 
+                        <abbr title="app\api\controller\v1\Address">Address</abbr>->createOrUpdateAddress()
+                    </li>
+                    <li>
+                at 
+                        <abbr title="ReflectionMethod">ReflectionMethod</abbr>->invokeArgs(
+                        <em>object</em>(
+                        <abbr title="app\api\controller\v1\Address">Address</abbr>), []) in
+                        <a class="toggle" title="D:\App\wamp64\www\xerg\thinkphp\library\think\App.php line 224">App.php line 224</a>
+                    </li>
+                    <li>
+                at 
+                        <abbr title="think\App">App</abbr>::invokeMethod([
+                        <em>object</em>(
+                        <abbr title="app\api\controller\v1\Address">Address</abbr>), '
+                        <a class="toggle" title="createOrUpdateAddress">createOrUpdateAddres...</a>'], []) in
+                        <a class="toggle" title="D:\App\wamp64\www\xerg\thinkphp\library\think\App.php line 389">App.php line 389</a>
+                    </li>
+                    <li>
+                at 
+                        <abbr title="think\App">App</abbr>::module(['api', 'v1.Address', '
+                        <a class="toggle" title="createOrUpdateAddress">createOrUpdateAddres...</a>'], ['app_namespace' => 'app', 'app_debug' =>
+                        <em>true</em>, 'app_trace' =>
+                        <em>false</em>, ...],
+                        <em>false</em>) in
+                        <a class="toggle" title="D:\App\wamp64\www\xerg\thinkphp\library\think\App.php line 130">App.php line 130</a>
+                    </li>
+                    <li>
+                at 
+                        <abbr title="think\App">App</abbr>::run() in
+                        <a class="toggle" title="D:\App\wamp64\www\xerg\thinkphp\start.php line 18">start.php line 18</a>
+                    </li>
+                    <li>
+                at require('
+                        <a class="toggle" title="D:\App\wamp64\www\xerg\thinkphp\start.php">D:\App\wamp64\www\xe...</a>') in
+                        <a class="toggle" title="D:\App\wamp64\www\xerg\public\index.php line 18">index.php line 18</a>
+                    </li>
+                </ol>
+            </div>
         </div>
-    </div>
-        
-    
         <div class="exception-var">
-        <h2>Environment Variables</h2>
-                <div>
-                        <div class="clearfix">
-                <div class="col-md-3"><strong>GET Data</strong></div>
-                <div class="col-md-9"><small>empty</small></div>
-            </div>
-                    </div>
-                <div>
-                        <div class="clearfix">
-                <div class="col-md-3"><strong>POST Data</strong></div>
-                <div class="col-md-9"><small>empty</small></div>
-            </div>
-                    </div>
-                <div>
-                        <div class="clearfix">
-                <div class="col-md-3"><strong>Files</strong></div>
-                <div class="col-md-9"><small>empty</small></div>
-            </div>
-                    </div>
-                <div>
-                        <div class="clearfix">
-                <div class="col-md-3"><strong>Cookies</strong></div>
-                <div class="col-md-9"><small>empty</small></div>
-            </div>
-                    </div>
-                <div>
-                        <div class="clearfix">
-                <div class="col-md-3"><strong>Session</strong></div>
-                <div class="col-md-9"><small>empty</small></div>
-            </div>
-                    </div>
-                <div>
-                        <h3 class="subheading">Server/Request Data</h3>
+            <h2>Environment Variables</h2>
             <div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>REDIRECT_STATUS</strong></div>
-                    <div class="col-md-9"><small>
-                        200                    </small></div>
+                <div class="clearfix">
+                    <div class="col-md-3">
+                        <strong>GET Data</strong>
+                    </div>
+                    <div class="col-md-9">
+                        <small>empty</small>
+                    </div>
                 </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>HTTP_HOST</strong></div>
-                    <div class="col-md-9"><small>
-                        x.cn                    </small></div>
+            </div>
+            <div>
+                <div class="clearfix">
+                    <div class="col-md-3">
+                        <strong>POST Data</strong>
+                    </div>
+                    <div class="col-md-9">
+                        <small>empty</small>
+                    </div>
                 </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>HTTP_CONNECTION</strong></div>
-                    <div class="col-md-9"><small>
-                        keep-alive                    </small></div>
+            </div>
+            <div>
+                <div class="clearfix">
+                    <div class="col-md-3">
+                        <strong>Files</strong>
+                    </div>
+                    <div class="col-md-9">
+                        <small>empty</small>
+                    </div>
                 </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>CONTENT_LENGTH</strong></div>
-                    <div class="col-md-9"><small>
-                        43                    </small></div>
+            </div>
+            <div>
+                <div class="clearfix">
+                    <div class="col-md-3">
+                        <strong>Cookies</strong>
+                    </div>
+                    <div class="col-md-9">
+                        <small>empty</small>
+                    </div>
                 </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>HTTP_PRAGMA</strong></div>
-                    <div class="col-md-9"><small>
-                        no-cache                    </small></div>
+            </div>
+            <div>
+                <div class="clearfix">
+                    <div class="col-md-3">
+                        <strong>Session</strong>
+                    </div>
+                    <div class="col-md-9">
+                        <small>empty</small>
+                    </div>
                 </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>HTTP_CACHE_CONTROL</strong></div>
-                    <div class="col-md-9"><small>
-                        no-cache                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>HTTP_ORIGIN</strong></div>
-                    <div class="col-md-9"><small>
-                        http://127.0.0.1:62027                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>HTTP_USER_AGENT</strong></div>
-                    <div class="col-md-9"><small>
-                        Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1 wechatdevtools/1.02.1812271 MicroMessenger/6.7.3 Language/zh_CN webview/ token/6340b87549e58f9361b1ccb5f560f933                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>CONTENT_TYPE</strong></div>
-                    <div class="col-md-9"><small>
-                        application/json                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>HTTP_ACCEPT</strong></div>
-                    <div class="col-md-9"><small>
-                        */*                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>HTTP_REFERER</strong></div>
-                    <div class="col-md-9"><small>
-                        https://servicewechat.com/wx1dd75bb5ba4b9cb5/devtools/page-frame.html                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>HTTP_ACCEPT_ENCODING</strong></div>
-                    <div class="col-md-9"><small>
-                        gzip, deflate                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;D:\App\Git\cmd;D:\App\Sublime Text 3;D:\App\wamp64\bin\php\php7.1.26;D:\App\wamp64\bin\mysql\mysql5.7.24\bin;C:\ProgramData\ComposerSetup\bin;C:\HashiCorp\Vagrant\bin;C:\Program Files\Java\jdk1.8.0_201\bin;C:\Program Files\Java\jdk1.8.0_201\jre\bin;D:\App\wamp64;C:\windows\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>SystemRoot</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\windows                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>COMSPEC</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\windows\system32\cmd.exe                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>PATHEXT</strong></div>
-                    <div class="col-md-9"><small>
-                        .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>WINDIR</strong></div>
-                    <div class="col-md-9"><small>
-                        C:\windows                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>SERVER_SIGNATURE</strong></div>
-                    <div class="col-md-9"><small>
+            </div>
+            <div>
+                <h3 class="subheading">Server/Request Data</h3>
+                <div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>REDIRECT_STATUS</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        200                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>HTTP_CODE</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        68fa11879f71564313263a43e5d0da08                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>CONTENT_TYPE</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        application/json                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>HTTP_USER_AGENT</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        PostmanRuntime/7.13.0                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>HTTP_ACCEPT</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        */*                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>HTTP_CACHE_CONTROL</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        no-cache                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>HTTP_POSTMAN_TOKEN</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        342f6936-f944-45bc-b6b9-b5357c4734cb                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>HTTP_HOST</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        x.cn                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>HTTP_ACCEPT_ENCODING</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        gzip, deflate                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>CONTENT_LENGTH</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        141                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>HTTP_CONNECTION</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        keep-alive                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>PATH</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;D:\App\Git\cmd;D:\App\Sublime Text 3;D:\App\wamp64\bin\php\php7.1.26;D:\App\wamp64\bin\mysql\mysql5.7.24\bin;C:\ProgramData\ComposerSetup\bin;C:\HashiCorp\Vagrant\bin;C:\Program Files\Java\jdk1.8.0_201\bin;C:\Program Files\Java\jdk1.8.0_201\jre\bin;D:\App\wamp64;C:\windows\system32\config\systemprofile\AppData\Local\Microsoft\WindowsApps                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>SystemRoot</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        C:\windows                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>COMSPEC</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        C:\windows\system32\cmd.exe                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>PATHEXT</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        .COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>WINDIR</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        C:\windows                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>SERVER_SIGNATURE</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
                         &lt;address&gt;Apache/2.4.37 (Win64) PHP/7.3.1 Server at x.cn Port 80&lt;/address&gt;
-                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>SERVER_SOFTWARE</strong></div>
-                    <div class="col-md-9"><small>
-                        Apache/2.4.37 (Win64) PHP/7.3.1                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>SERVER_NAME</strong></div>
-                    <div class="col-md-9"><small>
-                        x.cn                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>SERVER_ADDR</strong></div>
-                    <div class="col-md-9"><small>
-                        127.0.0.1                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>SERVER_PORT</strong></div>
-                    <div class="col-md-9"><small>
-                        80                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>REMOTE_ADDR</strong></div>
-                    <div class="col-md-9"><small>
-                        127.0.0.1                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>DOCUMENT_ROOT</strong></div>
-                    <div class="col-md-9"><small>
-                        D:/App/wamp64/www/xerg/public                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>REQUEST_SCHEME</strong></div>
-                    <div class="col-md-9"><small>
-                        http                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>CONTEXT_PREFIX</strong></div>
-                    <div class="col-md-9"><small>
-                                            </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>CONTEXT_DOCUMENT_ROOT</strong></div>
-                    <div class="col-md-9"><small>
-                        D:/App/wamp64/www/xerg/public                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>SERVER_ADMIN</strong></div>
-                    <div class="col-md-9"><small>
-                        wampserver@wampserver.invalid                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>SCRIPT_FILENAME</strong></div>
-                    <div class="col-md-9"><small>
-                        D:/App/wamp64/www/xerg/public/index.php                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>REMOTE_PORT</strong></div>
-                    <div class="col-md-9"><small>
-                        4390                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>REDIRECT_URL</strong></div>
-                    <div class="col-md-9"><small>
-                        /api/v1/token/user                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>GATEWAY_INTERFACE</strong></div>
-                    <div class="col-md-9"><small>
-                        CGI/1.1                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>SERVER_PROTOCOL</strong></div>
-                    <div class="col-md-9"><small>
-                        HTTP/1.1                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>REQUEST_METHOD</strong></div>
-                    <div class="col-md-9"><small>
-                        POST                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>QUERY_STRING</strong></div>
-                    <div class="col-md-9"><small>
-                                            </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>REQUEST_URI</strong></div>
-                    <div class="col-md-9"><small>
-                        /api/v1/token/user                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>SCRIPT_NAME</strong></div>
-                    <div class="col-md-9"><small>
-                        /index.php                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>PATH_INFO</strong></div>
-                    <div class="col-md-9"><small>
-                        /api/v1/token/user                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>PATH_TRANSLATED</strong></div>
-                    <div class="col-md-9"><small>
-                        redirect:\index.php\api\v1\token\user\v1\token\user                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>PHP_SELF</strong></div>
-                    <div class="col-md-9"><small>
-                        /index.php/api/v1/token/user                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>REQUEST_TIME_FLOAT</strong></div>
-                    <div class="col-md-9"><small>
-                        1559540521.083                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>REQUEST_TIME</strong></div>
-                    <div class="col-md-9"><small>
-                        1559540521                    </small></div>
-                </div>
-                            </div>
+                    </small>
+                        </div>
                     </div>
-                <div>
-                        <div class="clearfix">
-                <div class="col-md-3"><strong>Environment Variables</strong></div>
-                <div class="col-md-9"><small>empty</small></div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>SERVER_SOFTWARE</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        Apache/2.4.37 (Win64) PHP/7.3.1                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>SERVER_NAME</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        x.cn                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>SERVER_ADDR</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        127.0.0.1                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>SERVER_PORT</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        80                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>REMOTE_ADDR</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        127.0.0.1                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>DOCUMENT_ROOT</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        D:/App/wamp64/www/xerg/public                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>REQUEST_SCHEME</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        http                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>CONTEXT_PREFIX</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                                            </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>CONTEXT_DOCUMENT_ROOT</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        D:/App/wamp64/www/xerg/public                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>SERVER_ADMIN</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        wampserver@wampserver.invalid                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>SCRIPT_FILENAME</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        D:/App/wamp64/www/xerg/public/index.php                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>REMOTE_PORT</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        2422                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>REDIRECT_URL</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        /api/v1/address                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>GATEWAY_INTERFACE</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        CGI/1.1                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>SERVER_PROTOCOL</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        HTTP/1.1                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>REQUEST_METHOD</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        POST                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>QUERY_STRING</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                                            </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>REQUEST_URI</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        /api/v1/address                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>SCRIPT_NAME</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        /index.php                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>PATH_INFO</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        /api/v1/address                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>PATH_TRANSLATED</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        redirect:\index.php\api\v1\address\v1\address                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>PHP_SELF</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        /index.php/api/v1/address                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>REQUEST_TIME_FLOAT</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        1559654578.235                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>REQUEST_TIME</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        1559654578                    </small>
+                        </div>
+                    </div>
+                </div>
             </div>
-                    </div>
-                <div>
-                        <h3 class="subheading">ThinkPHP Constants</h3>
             <div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>APP_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        D:\App\wamp64\www\xerg\public/../application/                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>LOG_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        D:\App\wamp64\www\xerg\public/../log/                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>THINK_VERSION</strong></div>
-                    <div class="col-md-9"><small>
-                        5.0.7                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>THINK_START_TIME</strong></div>
-                    <div class="col-md-9"><small>
-                        1559540521.0925                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>THINK_START_MEM</strong></div>
-                    <div class="col-md-9"><small>
-                        410176                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>EXT</strong></div>
-                    <div class="col-md-9"><small>
-                        .php                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>DS</strong></div>
-                    <div class="col-md-9"><small>
-                        \                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>THINK_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        D:\App\wamp64\www\xerg\thinkphp\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>LIB_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        D:\App\wamp64\www\xerg\thinkphp\library\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>CORE_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        D:\App\wamp64\www\xerg\thinkphp\library\think\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>TRAIT_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        D:\App\wamp64\www\xerg\thinkphp\library\traits\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>ROOT_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        D:\App\wamp64\www\xerg\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>EXTEND_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        D:\App\wamp64\www\xerg\extend\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>VENDOR_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        D:\App\wamp64\www\xerg\vendor\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>RUNTIME_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        D:\App\wamp64\www\xerg\runtime\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>CACHE_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        D:\App\wamp64\www\xerg\runtime\cache\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>TEMP_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        D:\App\wamp64\www\xerg\runtime\temp\                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>CONF_PATH</strong></div>
-                    <div class="col-md-9"><small>
-                        D:\App\wamp64\www\xerg\public/../application/                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>CONF_EXT</strong></div>
-                    <div class="col-md-9"><small>
-                        .php                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>ENV_PREFIX</strong></div>
-                    <div class="col-md-9"><small>
-                        PHP_                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>IS_CLI</strong></div>
-                    <div class="col-md-9"><small>
-                        false                    </small></div>
-                </div>
-                                <div class="clearfix">
-                    <div class="col-md-3"><strong>IS_WIN</strong></div>
-                    <div class="col-md-9"><small>
-                        true                    </small></div>
-                </div>
-                            </div>
+                <div class="clearfix">
+                    <div class="col-md-3">
+                        <strong>Environment Variables</strong>
                     </div>
+                    <div class="col-md-9">
+                        <small>empty</small>
+                    </div>
+                </div>
             </div>
-    
-    <div class="copyright">
-        <a title="官方网站" href="http://www.thinkphp.cn">ThinkPHP</a> 
-        <span>V5.0.7</span> 
-        <span>{ 十年磨一剑-为API开发设计的高性能框架 }</span>
-    </div>
+            <div>
+                <h3 class="subheading">ThinkPHP Constants</h3>
+                <div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>APP_PATH</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        D:\App\wamp64\www\xerg\public/../application/                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>LOG_PATH</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        D:\App\wamp64\www\xerg\public/../log/                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>THINK_VERSION</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        5.0.7                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>THINK_START_TIME</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        1559654578.2436                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>THINK_START_MEM</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        409520                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>EXT</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        .php                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>DS</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        \                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>THINK_PATH</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        D:\App\wamp64\www\xerg\thinkphp\                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>LIB_PATH</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        D:\App\wamp64\www\xerg\thinkphp\library\                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>CORE_PATH</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        D:\App\wamp64\www\xerg\thinkphp\library\think\                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>TRAIT_PATH</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        D:\App\wamp64\www\xerg\thinkphp\library\traits\                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>ROOT_PATH</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        D:\App\wamp64\www\xerg\                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>EXTEND_PATH</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        D:\App\wamp64\www\xerg\extend\                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>VENDOR_PATH</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        D:\App\wamp64\www\xerg\vendor\                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>RUNTIME_PATH</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        D:\App\wamp64\www\xerg\runtime\                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>CACHE_PATH</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        D:\App\wamp64\www\xerg\runtime\cache\                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>TEMP_PATH</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        D:\App\wamp64\www\xerg\runtime\temp\                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>CONF_PATH</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        D:\App\wamp64\www\xerg\public/../application/                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>CONF_EXT</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        .php                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>ENV_PREFIX</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        PHP_                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>IS_CLI</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        false                    </small>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="col-md-3">
+                            <strong>IS_WIN</strong>
+                        </div>
+                        <div class="col-md-9">
+                            <small>
+                        true                    </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <a title="官方网站" href="http://www.thinkphp.cn">ThinkPHP</a>
+            <span>V5.0.7</span>
+            <span>{ 十年磨一剑-为API开发设计的高性能框架 }</span>
+        </div>
         <script>
         var LINE = 32;
 
@@ -753,6 +1120,7 @@
             });
 
         })();
-    </script>
+    
+        </script>
     </body>
 </html>

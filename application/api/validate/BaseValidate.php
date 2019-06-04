@@ -23,7 +23,7 @@ class BaseValidate extends Validate
         $params = $request->param();
 
         $result = $this->batch()->check($params);
-        if (!$this->check($params)) {
+        if (!$result) {
             $exception = new ParameterException(
                 [
                     // $this->error有一个问题，并不是一定返回数组，需要判断
@@ -43,6 +43,17 @@ class BaseValidate extends Validate
         } else {
             return false;
 //            return $field. '必须是正整数';
+        }
+    }
+
+    protected function isMobile($value)
+    {
+        $rule = '^1(3|4|5|6|7|8)[0-9]\d{8}$^';
+        $result = preg_match($rule , $value);
+        if($result) {
+            return true;
+        } else {
+            return false;
         }
     }
 
