@@ -5,6 +5,7 @@ namespace app\api\controller\v1;
 
 
 use app\api\service\Token as TokenService;
+use app\api\validate\OrderPlace;
 use app\lib\enum\ScopeEnum;
 use app\lib\exception\ForbiddenException;
 use app\lib\exception\TokenException;
@@ -28,7 +29,7 @@ class Order extends BaseController
 
     public function placeOrder()
     {
-        
+        (new OrderPlace())->goCheck();
     }
 
 
