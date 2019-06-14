@@ -30,6 +30,8 @@ class Order extends BaseController
     public function placeOrder()
     {
         (new OrderPlace())->goCheck();
+        $products = input('post.products/a');
+        $uid = TokenService::getCurrentUid();
     }
 
 
