@@ -5,7 +5,9 @@ namespace app\api\service;
 
 
 use app\api\model\Product;
+use app\api\model\UserAddress;
 use app\lib\exception\OrderException;
+use app\lib\exception\UserException;
 
 class Order
 {
@@ -31,6 +33,42 @@ class Order
         }
 
         // 开始创建订单
+        $orderSnap = $this->snapOrder();
+    }
+
+    private function snapOrder($status)
+    {
+        $snap = [
+            'orderPrice' => 0,
+            'totalCount' => 0,
+            'pStatus' => [],
+            'snapAddress' => null,
+            'snapName' => '',
+            'snapImg' => ''
+        ];
+
+        $snap['orderPrice'] = $status['orderPrice'];
+        $snap['totalCount'] = $status['totalCount'];
+        $snap['pStatus'] = $status['pStatusArray'];
+        $snap['snapAddress'] = json_encode($this->getUserAddress());
+        $snap['snapName'] = $this->products[0]['name'];
+        $snap['snapImg'] = $this->products[0]['main_img_url'];
+
+        if(count($this->products) >1 ){
+            $snap['snapName'] .= '等';
+        }
+
+    }
+    private function getUserAddress()
+    {
+        $userAddress = UserAddress::where('user_id' , '=' , $this->uid)
+                                    ->find();
+        if(!$userAddress){
+            throw new UserException([
+                'msg' => '用户收货地址不存在 , 下单失败',
+                'errorCode' => 60001,
+            ]);
+        }
     }
 
     private function getOrderStatus()
@@ -38,6 +76,7 @@ class Order
         $status = [
             'pass' => true,
             'orderPrice' => 0, // 订单总价格
+            'totalCount' => 0,
             'pStatusArray' => [] //保存订单所有商品详细信息
         ];
 
@@ -52,6 +91,7 @@ class Order
             }
 
             $status['orderPrice'] +=$pStatus['totalPrice'];
+            $status['totalCount'] +=$pStatus['count'];
             array_push($status['pStatusArray'], $pStatus);
         }
         return $status;
