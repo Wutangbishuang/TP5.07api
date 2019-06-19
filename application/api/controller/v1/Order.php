@@ -4,13 +4,9 @@
 namespace app\api\controller\v1;
 
 
+use app\api\service\Order as OrderService;
 use app\api\service\Token as TokenService;
 use app\api\validate\OrderPlace;
-use app\api\service\Order as OrderService;
-use app\lib\enum\ScopeEnum;
-use app\lib\exception\ForbiddenException;
-use app\lib\exception\TokenException;
-use think\Controller;
 
 class Order extends BaseController
 {
@@ -38,6 +34,4 @@ class Order extends BaseController
         $status = $order->place($uid , $products);
         return $status;
     }
-
-
 }

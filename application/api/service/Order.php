@@ -86,28 +86,24 @@ class Order
         return $orderSn;
     }
 
-    private function snapOrder($status)
+    // 预检测并生成订单快照
+    private function snapOrder()
     {
+        // status可以单独定义一个类
         $snap = [
             'orderPrice' => 0,
             'totalCount' => 0,
             'pStatus' => [],
-            'snapAddress' => null,
-            'snapName' => '',
-            'snapImg' => ''
+            'snapAddress' => json_encode($this->getUserAddress()),
+            'snapName' => $this->products[0]['name'],
+            'snapImg' => $this->products[0]['main_img_url'],
         ];
 
-        $snap['orderPrice'] = $status['orderPrice'];
-        $snap['totalCount'] = $status['totalCount'];
-        $snap['pStatus'] = $status['pStatusArray'];
-        $snap['snapAddress'] = json_encode($this->getUserAddress());
-        $snap['snapName'] = $this->products[0]['name'];
-        $snap['snapImg'] = $this->products[0]['main_img_url'];
-
-        if(count($this->products) >1 ){
+        if (count($this->products) > 1) {
             $snap['snapName'] .= '等';
         }
 
+        return $snap;
     }
     private function getUserAddress()
     {
@@ -140,43 +136,44 @@ class Order
                 $status['pass'] = false;
             }
 
-            $status['orderPrice'] +=$pStatus['totalPrice'];
+            $status['orderPrice'] += $pStatus['totalPrice'];
             $status['totalCount'] +=$pStatus['count'];
             array_push($status['pStatusArray'], $pStatus);
         }
         return $status;
     }
 
-    private function getProductStatus($oPID , $oCount , $products)
+    private function getProductStatus($oPID, $oCount, $products)
     {
         $pIndex = -1;
-
         $pStatus = [
             'id' => null,
             'haveStock' => false,
             'count' => 0,
             'name' => '',
-            'totalPrice' => 0 // 单价 * 数量的价格
+            'totalPrice' => 0
         ];
 
-        for( $i = 0;$i<count($products);$i++){
-            if($oPID == $products[$i]['id']){
+        for ($i = 0; $i < count($products); $i++) {
+            if ($oPID == $products[$i]['id']) {
                 $pIndex = $i;
             }
         }
 
-        if($pIndex = -1){
-            // 客户端传递的 product_id 有可能根本不存在
-            throw new OrderException([
-                'msg' => 'id为'.$oPID.'的商品不存在 ， 创建订单失败'
-            ]);
+        if ($pIndex == -1) {
+            // 客户端传递的productid有可能根本不存在
+            throw new OrderException(
+                [
+                    'msg' => 'id为' . $oPID . '的商品不存在，订单创建失败'
+                ]);
         } else {
             $product = $products[$pIndex];
             $pStatus['id'] = $product['id'];
+            $pStatus['name'] = $product['name'];
             $pStatus['count'] = $oCount;
             $pStatus['totalPrice'] = $product['price'] * $oCount;
 
-            if($product['stock'] - $oCount >= 0){
+            if ($product['stock'] - $oCount >= 0) {
                 $pStatus['haveStock'] = true;
             }
         }
@@ -188,7 +185,7 @@ class Order
     {
         $oPIDs = [];
         foreach ($oProducts as $item) {
-            array_push($oPIDs , $item['ptoduct_id']);
+            array_push($oPIDs , $item['product_id']);
         }
         $products = Product::all($oPIDs)
                     ->visible(['id' , 'price' , 'stock' , 'name' , 'main_img_url'])
