@@ -118,7 +118,18 @@ class Order
                 'msg' => '用户收货地址不存在 , 下单失败',
                 'errorCode' => 60001,
             ]);
-        } 
+        }
+        return $userAddress->toArray();
+    }
+
+    public function checkOrderStock($orderID)
+    {
+        $oProducts = OrderProduct::where('order_id' , '=' , $orderID)
+            ->select();
+        $this->oProducts = $oProducts;
+        $this->products = $this->getProductsByOrder($oProducts);
+        $status = $this->getOrderStatus();
+        return $status;
     }
 
     private function getOrderStatus()
