@@ -137,7 +137,7 @@
             box-sizing: border-box;
         font-size:14px;
             font-family: "Century Gothic",Consolas,"Liberation Mono",Courier,Verdana;
-            padding-left: 56px;
+            padding-left: 48px;
         }
         .exception .source-code pre li{
             border-left: 1px solid #ddd;
@@ -240,40 +240,42 @@
         
             <div class="info">
                 <div>
-                    <h2>[0] <abbr title="think\exception\ThrowableError">ThrowableError</abbr> in <a class="toggle" title="D:\App\wamp64\www\xerg\application\api\service\Order.php line 111">Order.php line 111</a></h2>
+                    <h2>[2] <abbr title="think\exception\ErrorException">ErrorException</abbr> in <a class="toggle" title="D:\App\wamp64\www\xerg\application\api\service\Order.php line 62">Order.php line 62</a></h2>
                 </div>
-                <div><h1>致命错误: Call to undefined method app\api\service\Order::snapProduct()</h1></div>
+                <div><h1>Division by zero</h1></div>
             </div>
         
     </div>
             <div class="source-code">
-            <pre class="prettyprint lang-php"><ol start="102"><li class="line-102"><code>        if (count($this-&gt;products) &gt; 1) {
-</code></li><li class="line-103"><code>            $snap['snapName'] .= '等';
-</code></li><li class="line-104"><code>        }
-</code></li><li class="line-105"><code>
-</code></li><li class="line-106"><code>
-</code></li><li class="line-107"><code>        for ($i = 0; $i &lt; count($this-&gt;products); $i++) {
-</code></li><li class="line-108"><code>            $product = $this-&gt;products[$i];
-</code></li><li class="line-109"><code>            $oProduct = $this-&gt;oProducts[$i];
-</code></li><li class="line-110"><code>
-</code></li><li class="line-111"><code>            $pStatus = $this-&gt;snapProduct($product, $oProduct['count']);
-</code></li><li class="line-112"><code>            $snap['orderPrice'] += $pStatus['totalPrice'];
-</code></li><li class="line-113"><code>            $snap['totalCount'] += $pStatus['count'];
-</code></li><li class="line-114"><code>            array_push($snap['pStatus'], $pStatus);
-</code></li><li class="line-115"><code>        }
-</code></li><li class="line-116"><code>        return $snap;
-</code></li><li class="line-117"><code>    }
-</code></li><li class="line-118"><code>    private function getUserAddress()
-</code></li><li class="line-119"><code>    {
-</code></li><li class="line-120"><code>        $userAddress = UserAddress::where('user_id' , '=' , $this-&gt;uid)
+            <pre class="prettyprint lang-php"><ol start="53"><li class="line-53"><code>            $order-&gt;order_no = $orderNo;
+</code></li><li class="line-54"><code>            $order-&gt;total_price = $snap['orderPrice'];
+</code></li><li class="line-55"><code>            $order-&gt;total_count = $snap['totalCount'];
+</code></li><li class="line-56"><code>            $order-&gt;snap_img = $snap['snapImg'];
+</code></li><li class="line-57"><code>            $order-&gt;snap_name = $snap['snapName'];
+</code></li><li class="line-58"><code>            $order-&gt;snap_address = $snap['snapAddress'];
+</code></li><li class="line-59"><code>            $order-&gt;snap_items = json_encode($snap['pStatus']);
+</code></li><li class="line-60"><code>
+</code></li><li class="line-61"><code>            $order-&gt;save();
+</code></li><li class="line-62"><code>            1/0;
+</code></li><li class="line-63"><code>
+</code></li><li class="line-64"><code>            $orderID = $order-&gt;id;
+</code></li><li class="line-65"><code>            $create_time = $order-&gt;create_time;
+</code></li><li class="line-66"><code>            foreach ($this-&gt;oProducts as &amp;$p) {
+</code></li><li class="line-67"><code>                $p['order_id'] = $orderID;
+</code></li><li class="line-68"><code>            }
+</code></li><li class="line-69"><code>
+</code></li><li class="line-70"><code>            $orderProduct = new OrderProduct();
+</code></li><li class="line-71"><code>            $orderProduct-&gt;saveAll($this-&gt;oProducts);
 </code></li></ol></pre>
         </div>
             <div class="trace">
             <h2>Call Stack</h2>
             <ol>
-                <li>in <a class="toggle" title="D:\App\wamp64\www\xerg\application\api\service\Order.php line 111">Order.php line 111</a></li>
+                <li>in <a class="toggle" title="D:\App\wamp64\www\xerg\application\api\service\Order.php line 62">Order.php line 62</a></li>
                                 <li>
-                at <abbr title="app\api\service\Order">Order</abbr>->snapOrder(['pass' => <em>true</em>, 'orderPrice' => 0.06, 'totalCount' => 6, ...]) in <a class="toggle" title="D:\App\wamp64\www\xerg\application\api\service\Order.php line 38">Order.php line 38</a>                </li>
+                at <abbr title="think\Error">Error</abbr>::appError(2, 'Division by zero', '<a class="toggle" title="D:\App\wamp64\www\xerg\application\api\service\Order.php">D:\App\wamp64\www\xe...</a>', 62, ['snap' => ['orderPrice' => 0, 'totalCount' => 0, 'pStatus' => [], ...], 'orderNo' => 'A620388835088706', 'order' => <em>object</em>(<abbr title="app\api\model\Order">Order</abbr>)]) in <a class="toggle" title="D:\App\wamp64\www\xerg\application\api\service\Order.php line 62">Order.php line 62</a>                </li>
+                                <li>
+                at <abbr title="app\api\service\Order">Order</abbr>->createOrder(['orderPrice' => 0, 'totalCount' => 0, 'pStatus' => [], ...]) in <a class="toggle" title="D:\App\wamp64\www\xerg\application\api\service\Order.php line 40">Order.php line 40</a>                </li>
                                 <li>
                 at <abbr title="app\api\service\Order">Order</abbr>->place(1, [['product_id' => 1, 'count' => 3], ['product_id' => 2, 'count' => 3]]) in <a class="toggle" title="D:\App\wamp64\www\xerg\application\api\controller\v1\Order.php line 34">Order.php line 34</a>                </li>
                                 <li>
@@ -292,6 +294,46 @@
         </div>
     </div>
         
+        <div class="exception-var">
+        <h2>Exception Datas</h2>
+                <table>
+                        <caption>Error Context</caption>
+            <tbody>
+                                <tr>
+                    <td>snap</td>
+                    <td>
+                        {
+    &quot;orderPrice&quot;: 0,
+    &quot;totalCount&quot;: 0,
+    &quot;pStatus&quot;: [],
+    &quot;snapAddress&quot;: &quot;null&quot;,
+    &quot;snapName&quot;: &quot;\u82b9\u83dc \u534a\u65a4\u7b49&quot;,
+    &quot;snapImg&quot;: &quot;http:\/\/x.cn\/images\/product-vg@1.png&quot;
+}                    </td>
+                </tr>
+                                <tr>
+                    <td>orderNo</td>
+                    <td>
+                        A620388835088706                    </td>
+                </tr>
+                                <tr>
+                    <td>order</td>
+                    <td>
+                        {
+    &quot;order_no&quot;: &quot;A620388835088706&quot;,
+    &quot;total_price&quot;: 0,
+    &quot;total_count&quot;: 0,
+    &quot;snap_img&quot;: &quot;http:\/\/x.cn\/images\/product-vg@1.png&quot;,
+    &quot;snap_name&quot;: &quot;\u82b9\u83dc \u534a\u65a4\u7b49&quot;,
+    &quot;snap_address&quot;: &quot;null&quot;,
+    &quot;snap_items&quot;: &quot;[]&quot;,
+    &quot;create_time&quot;: &quot;2019-06-20 21:54:43&quot;,
+    &quot;id&quot;: &quot;4&quot;
+}                    </td>
+                </tr>
+                            </tbody>
+                    </table>
+            </div>
     
         <div class="exception-var">
         <h2>Environment Variables</h2>
@@ -361,7 +403,7 @@
                                 <div class="clearfix">
                     <div class="col-md-3"><strong>HTTP_ORIGIN</strong></div>
                     <div class="col-md-9"><small>
-                        http://127.0.0.1:41643                    </small></div>
+                        http://127.0.0.1:31514                    </small></div>
                 </div>
                                 <div class="clearfix">
                     <div class="col-md-3"><strong>HTTP_USER_AGENT</strong></div>
@@ -371,7 +413,7 @@
                                 <div class="clearfix">
                     <div class="col-md-3"><strong>HTTP_TOKEN</strong></div>
                     <div class="col-md-9"><small>
-                        5935b888d5cccfdc31370c2501327f28                    </small></div>
+                        b33e2a958844ce8911b48d2cabd52403                    </small></div>
                 </div>
                                 <div class="clearfix">
                     <div class="col-md-3"><strong>CONTENT_TYPE</strong></div>
@@ -487,7 +529,7 @@
                                 <div class="clearfix">
                     <div class="col-md-3"><strong>REMOTE_PORT</strong></div>
                     <div class="col-md-9"><small>
-                        10726                    </small></div>
+                        2624                    </small></div>
                 </div>
                                 <div class="clearfix">
                     <div class="col-md-3"><strong>REDIRECT_URL</strong></div>
@@ -542,12 +584,12 @@
                                 <div class="clearfix">
                     <div class="col-md-3"><strong>REQUEST_TIME_FLOAT</strong></div>
                     <div class="col-md-9"><small>
-                        1560950962.344                    </small></div>
+                        1561038883.468                    </small></div>
                 </div>
                                 <div class="clearfix">
                     <div class="col-md-3"><strong>REQUEST_TIME</strong></div>
                     <div class="col-md-9"><small>
-                        1560950962                    </small></div>
+                        1561038883                    </small></div>
                 </div>
                             </div>
                     </div>
@@ -578,7 +620,7 @@
                                 <div class="clearfix">
                     <div class="col-md-3"><strong>THINK_START_TIME</strong></div>
                     <div class="col-md-9"><small>
-                        1560950962.3525                    </small></div>
+                        1561038883.4776                    </small></div>
                 </div>
                                 <div class="clearfix">
                     <div class="col-md-3"><strong>THINK_START_MEM</strong></div>
@@ -680,7 +722,7 @@
         <span>{ 十年磨一剑-为API开发设计的高性能框架 }</span>
     </div>
         <script>
-        var LINE = 111;
+        var LINE = 62;
 
         function $(selector, node){
             var elements;
