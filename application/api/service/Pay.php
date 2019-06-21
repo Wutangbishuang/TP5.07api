@@ -10,7 +10,9 @@ use app\lib\exception\TokenException;
 use think\Exception;
 use app\api\model\Order as OrderModel;
 use app\api\service\Order as OrderService;
+use think\Loader;
 
+Loader::import('WxPay.WxPay',EXTEND_PATH,'.Api.php');
 class Pay
 {
     private $orderID;
@@ -40,7 +42,12 @@ class Pay
 
     private function makeWxPreOrder()
     {
-
+        // openid
+        $openid = Token::getCurrentTokenVar('openid');
+        if(!$openid){
+            throw new TokenException();
+        }
+        $wxOrderData = new \WxPayUnifiedOrder();
     }
 
     private function checkOrderValid()
