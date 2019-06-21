@@ -39,6 +39,7 @@ class Pay
         if(!$status['pass']){
             return $status;
         }
+        return $this->makeWxPreOrder($status['orderPrice']);
     }
 
     private function makeWxPreOrder()
@@ -55,6 +56,7 @@ class Pay
         $wxOrderData->SetBody('零食商贩');
         $wxOrderData->SetOpenid($openid);
         $wxOrderData->SetNotify_url('');
+        return $this->getPaySignature($wxOrderData);
     }
 
     private function getPaySignature($wxOrderData)
@@ -66,6 +68,7 @@ class Pay
             Log::record($wxOrder , 'error');
             Log::record('获取预支付订单失败' , 'error');
         }
+        return null;
     }
 
     private function checkOrderValid()
