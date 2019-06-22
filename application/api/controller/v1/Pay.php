@@ -22,6 +22,6 @@ class Pay extends BaseController
     {
         (new IDMustBePostiveInt())->goCheck();
         $pay = new PayService($id);
-        $pay->pay();
+        return $pay->pay();
     }
 }
