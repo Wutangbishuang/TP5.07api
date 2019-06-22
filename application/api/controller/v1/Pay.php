@@ -24,4 +24,9 @@ class Pay extends BaseController
         $pay = new PayService($id);
         return $pay->pay();
     }
+
+    public function receiveNotify()
+    {
+        // 通知频率为 15/15/30/180/1800/1800/1800/1800/3600 单位： 秒
+    }
 }
