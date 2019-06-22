@@ -68,9 +68,16 @@ class Pay
             Log::record($wxOrder , 'error');
             Log::record('获取预支付订单失败' , 'error');
         }
+        $this->recordPreOrder($wxOrder);
         return null;
     }
 
+    private function recordPreOrder($wxOrder)
+    {
+        OrderModel::where('id' , '=' , $this->orderID)
+                    ->update(['prepay_id'=>$wxOrder['prepay_id']]);
+    }
+    
     private function checkOrderValid()
     {
         $order = OrderModel::where('id' , '=' , $this->orderId)
